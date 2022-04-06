@@ -8,10 +8,10 @@ import time
 from Crypto.Cipher import AES
 
 q = Queue(100000)
+time_start = time.time()
 ALL_COUNT = 0
 DONE_COUNT = 0
 
-ALL_SIZE = 0
 DONE_SIZE = 0
 
 
@@ -102,15 +102,25 @@ class Consumer(Thread):
 
                 DONE_SIZE += ts.__sizeof__()
                 with open(title, 'wb') as f:
+                    # for chunk in response.iter_content(chunk_size=1024):
+                    #     if chunk:
+                    #         f.write(chunk)
                     f.write(ts)
                     f.close()
+
                 if response.status_code == 200:
                     break
 
 
         global DONE_COUNT
         DONE_COUNT += 1
+        end_time = time.time()
+        speed = DONE_SIZE/(end_time-time_start)
         # 简化的进度条
-        print(f'\r[{DONE_COUNT}/{ALL_COUNT}] [{self.sizeFormat(DONE_SIZE)}/{self.sizeFormat((DONE_SIZE/DONE_COUNT)*ALL_COUNT)}] {round((DONE_COUNT/ALL_COUNT)*100,2)}%',end='')
+        if speed != 0:
+            eta = int((end_time - time_start) * (ALL_COUNT-DONE_COUNT) / DONE_COUNT)
+        else:
+            eta = 0
+        print(f'\r  process:[{DONE_COUNT}/{ALL_COUNT}] [{self.sizeFormat(DONE_SIZE)}/{self.sizeFormat((DONE_SIZE/DONE_COUNT)*ALL_COUNT)}] {round((DONE_COUNT/ALL_COUNT)*100,2)}% speed:{self.sizeFormat(speed)}/s eta:{time.strftime("%H:%M:%S", time.gmtime(eta))}',end='')
 
 
