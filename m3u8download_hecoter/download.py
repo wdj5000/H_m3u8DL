@@ -99,6 +99,8 @@ class Consumer(Thread):
 
                 if 'method' in info:
                     ts = Decrypt(ts=ts,method=info['method'],key=info['key'],iv=info['iv']).run()
+                if ts[:4] == b'\x89PNG' or ts[:4] == b'BM\xee\x0c':
+                    ts = ts[4:]
 
                 DONE_SIZE += ts.__sizeof__()
                 with open(title, 'wb') as f:
