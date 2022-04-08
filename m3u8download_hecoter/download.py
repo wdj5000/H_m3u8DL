@@ -7,6 +7,7 @@ from queue import Queue
 import time
 from Crypto.Cipher import AES
 
+
 q = Queue(100000)
 time_start = time.time()
 ALL_COUNT = 0
@@ -27,12 +28,17 @@ class FastRequests:
         self.headres = headers
 
     def run(self):
+        global ALL_COUNT,DONE_COUNT,DONE_SIZE
         for i in range(self.threads):
             t = Consumer(self.headres)
             t.start()
 
         while DONE_COUNT < ALL_COUNT:
             time.sleep(0.01)
+        # 下载完后初始化缓存信息
+        ALL_COUNT = 0
+        DONE_COUNT = 0
+        DONE_SIZE = 0
 
 class Decrypt:
     def __init__(self,method,ts,key,iv=None):
@@ -94,13 +100,13 @@ class Consumer(Thread):
 
         if not os.path.exists(title):
             for i in range(self.retry_times):
-                response = requests.get(url=link, headers=self.headers, stream=True)
+                response = requests.get(url=link, headers=self.headers, stream=True,timeout=10)
                 ts = response.content
 
                 if 'method' in info:
                     ts = Decrypt(ts=ts,method=info['method'],key=info['key'],iv=info['iv']).run()
                 if ts[:4] == b'\x89PNG' or ts[:4] == b'BM\xee\x0c':
-                    ts_start = ts.find(b'IEND')
+                    ts_start = ts.find(b'G@')
                     ts = ts[ts_start:]
 
                 DONE_SIZE += ts.__sizeof__()
