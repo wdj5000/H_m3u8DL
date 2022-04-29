@@ -6,6 +6,8 @@
 
 主要用来多线程下载文件，对m3u8链接进行了 解析、下载、解密、合并、删除等操作
 
+支持windows,mac,linux
+
 ## 文件内容：
 
 m3u8download_hecoter
@@ -32,7 +34,9 @@ m3u8download_hecoter
 
 支持 AES_128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine
 
+## decrypt_plus.py
 
+内置一些解密，支持xet,huke
 
 ## parser.py
 
@@ -43,6 +47,10 @@ m3u8download_hecoter
 ## download.py
 
 实际多线程下载部分，另配有简易进度条
+
+## idm5.py
+
+下载mp4文件使用
 
 ## 	merge.py
 
@@ -64,7 +72,9 @@ m3u8download_hecoter
 
 ## 使用方法
 
-下载完整代码：https://github.com/hecoter/m3u8download_hecoter 直接调用
+下载完整代码：https://github.com/hecoter/m3u8download_hecoter 
+
+将完整代码与你的程序放在同一目录下，然后直接调用，示例：
 
 ```
 from m3u8download_hecoter import m3u8download
