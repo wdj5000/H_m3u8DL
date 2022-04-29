@@ -1,5 +1,19 @@
 # python 多线程实例—简易的m3u8下载器
 
+使用方式：
+
+先pip 安装，pip install m3u8download-hecoter ，还要下载 ffmpeg 
+
+然后 python 运行：
+
+```
+from m3u8download_hecoter import m3u8download
+m3u8download(m3u8url='https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',title='9-第四节  民法典合同编及价格法（二）',work_dir='000',key='kQ2aSmyG1FDSmzpqTso/0w==',enable_del=False)
+
+```
+
+
+
 ## 介绍
 
 这个是上篇帖子的实际应用 [简易封装的python多线程类 - 『编程语言讨论求助区』 - 吾爱破解 - LCG - LSG |安卓破解|病毒分析|www.52pojie.cn](https://www.52pojie.cn/thread-1615108-1-1.html)
