@@ -6,7 +6,7 @@ from distutils.core import setup
 with open("README.rst", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-VERSION="0.3.5"
+VERSION="0.3.6"
 
 setup(
     name="H_m3u8DL",

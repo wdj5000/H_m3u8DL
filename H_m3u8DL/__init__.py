@@ -189,9 +189,9 @@ def main(argv=None):
 
 
 if __name__ == '__main__':
-    # main()
+    main()
 
-    m3u8url = 'https://pl-ali.youku.com/playlist/m3u8?vid=XNDMwMjk5OTU2MA%3D%3D&type=cmaf4hd2&ups_client_netip=3b343443&utid=qYJ6Ge93NBcCATs0NGZhFahZ&ccode=0502&psid=adeceb5a3428ffc7bdfebbd119d3ca1c41346&ups_userid=1577938132&ups_ytid=1577938132&app_ver=4.0.77&duration=10429&expire=18000&drm_type=19&drm_device=7&drm_default=16&sm=1&nt=1&oss_file=05007D0000619E0FA68BB780000000EA1B47F2-462B-4E34-B1B7-E6221757DE75&media_type=standard%2Csubtitle&hotvt=1&dyt=0&ups_ts=1655351638&onOff=16&encr=0&ups_key=3b7f9224b69b0b4546783190655e6716'
-    key = '6710b9f92a2ef916f92fe5ba1c424ba9'
-    m3u8download(m3u8url,key=key)
+    # m3u8url = 'https://pl-ali.youku.com/playlist/m3u8?vid=XNDMwMjk5OTU2MA%3D%3D&type=cmaf4hd2&ups_client_netip=3b343443&utid=qYJ6Ge93NBcCATs0NGZhFahZ&ccode=0502&psid=adeceb5a3428ffc7bdfebbd119d3ca1c41346&ups_userid=1577938132&ups_ytid=1577938132&app_ver=4.0.77&duration=10429&expire=18000&drm_type=19&drm_device=7&drm_default=16&sm=1&nt=1&oss_file=05007D0000619E0FA68BB780000000EA1B47F2-462B-4E34-B1B7-E6221757DE75&media_type=standard%2Csubtitle&hotvt=1&dyt=0&ups_ts=1655351638&onOff=16&encr=0&ups_key=3b7f9224b69b0b4546783190655e6716'
+    # key = '6710b9f92a2ef916f92fe5ba1c424ba9'
+    # m3u8download(m3u8url,key=key)
 

@@ -120,6 +120,7 @@ class Parser:
                 m3u8obj = m3u8.load('temp.m3u8')
                 m3u8obj = preload(m3u8obj)
             return m3u8obj
+
         m3u8obj = m3u8.load(uri=self.m3u8url, headers=self.headers, verify_ssl=False,http_client=m3u8.DefaultHTTPClient(proxies=self.proxies))
 
         m3u8obj = preload(m3u8obj)
@@ -142,7 +143,7 @@ class Parser:
             print('检测到大师列表，构造链接……')
             playlists = m3u8obj.data['playlists']
 
-            self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
+            # self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
             for playlist in playlists:
 
                 if 'resolution' in playlist['stream_info']:
@@ -152,9 +153,9 @@ class Parser:
                 else:
                     resolution = ''
                 info = {
-                    'm3u8url':self.base_uri_parse + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri'],
+                    'm3u8url':m3u8obj.base_uri + playlist['uri'] if playlist['uri'][:4] != 'http' else playlist['uri'],# playlist['uri']
                     'title':self.title +'_' + resolution,
-                    'base_uri_parse':self.base_uri_parse,
+                    'base_uri_parse':m3u8obj.base_uri,
                     'resolution':resolution,
                     'work_dir':self.work_dir,
                     'headers':self.headers,
@@ -163,14 +164,13 @@ class Parser:
                     'method':self.method,
                     'key':self.key
                 }
-
                 infos.append(info)
 
             # 视频之后的其他文件
             if m3u8obj.data['media'] != []:
                 medias = m3u8obj.data['media']
 
-                self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
+                # self.base_uri_parse = '/'.join(m3u8obj.base_uri.split('/')[:-3])
                 for media in medias:
 
                     if 'stream_info' not in media:
@@ -183,10 +183,10 @@ class Parser:
                     else:
                         resolution = ''
                     info = {
-                        'm3u8url':self.base_uri_parse + media['uri'] if media['uri'][:4] != 'http' else media['uri'],
+                        'm3u8url':m3u8obj.base_uri + media['uri'] if media['uri'][:4] != 'http' else media['uri'],
                         'title':self.title +'_' + resolution if resolution != '' else self.title + f'_{media["type"]}',
                         'resolution': resolution,
-                        'base_uri_parse': self.base_uri_parse,
+                        'base_uri_parse': m3u8obj.base_uri,
                         'work_dir': self.work_dir,
                         'headers': self.headers,
                         'enable_del': self.enable_del,
