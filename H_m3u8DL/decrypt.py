@@ -3,6 +3,8 @@ import sys,os
 import base64,json,re
 import requests
 from H_m3u8DL import delFile
+from H_m3u8DL.Util import util
+
 
 class Decrypt:
     def __init__(self, m3u8obj, temp_dir, method=None, key=None, iv=None, headers=None):
@@ -180,7 +182,7 @@ def decrypt2(temp_dir,key):
             key = base64.b64decode(key).hex()
         before_title = temp_dir + '.mp4'
         after_title = temp_dir + '_de.mp4'
-        command = fr'mp4decrypt --show-progress --key 1:{key} "{before_title}" "{after_title}"'
+        command = fr'{util().mp4decryptPath} --show-progress --key 1:{key} "{before_title}" "{after_title}"'
         # 自行下载 mp4decrypt
         subprocess.call(command)
 
@@ -189,7 +191,7 @@ def decrypt2(temp_dir,key):
         print('解密出错，请检查key是否正确并配置mp4decrypt \n')
 
 def decrypt_copyrightDRM(m3u8url,title,key):
-    cmd = fr'youkudecrypt "{m3u8url}" --workDir "Downloads" --saveName "{title}" --useKeyBase64 "{key}" --enableMuxFastStart --enableYouKuAes '
+    cmd = fr'{util().youkudecryptPath} "{m3u8url}" --workDir "Downloads" --saveName "{title}" --useKeyBase64 "{key}" --enableMuxFastStart --enableYouKuAes '
     print(cmd)
     # "m3u8url" --workDir "Downloads" --saveName "title" --useKeyBase64 "youkukey" --enableMuxFastStart --enableYouKuAes
     subprocess.call(cmd)

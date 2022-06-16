@@ -3,7 +3,7 @@ python 多线程实例-m3u8下载器
 
 使用方式：
 
-``pip install H_m3u8DL`` ，下载 ``ffmpeg``
+``pip install H_m3u8DL``
 
 介绍
 ----
@@ -15,8 +15,6 @@ python 多线程实例-m3u8下载器
 
 支持多种方式调用
 
-可能用到的工具包：\ https://github.com/hecoter/H_m3u8DL/tree/main/Tools
-
 参数介绍
 ~~~~~~~~
 
@@ -24,7 +22,26 @@ python 多线程实例-m3u8下载器
 
 .. code:: 
 
-   H_m3u8DL "m3u8url"
+   hm3u8dl "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8"
+
+.. code:: 
+
+   hm3u8dl "https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8" -key "kQ2aSmyG1FDSmzpqTso/0w==" -title "视频名称"
+
+.. code:: 
+
+   	-m3u8url: m3u8链接、文件、文件夹、List
+       -title:视频名称
+       -base_uri_parse:自定义baseuri
+       -threads:线程数
+       -key:自定义key
+       -iv:自定义iv
+       -method:自定义方法 'SAMPLE-AES-CTR', 'cbcs', 'SAMPLE-AES','AES-128','copyrightDRM'
+       -work_dir:工作目录
+       -headers:自定义请求头
+       -enable_del:下载完成后删除多余文件False True
+       -merge_mode:合并方法，1:二进制合并 2:二进制合并后再用ffmpeg 转码 3:用ffmpeg 合并
+       -proxy:设置代理 {'http':'http://127.0.0.1:8888','https:':'https://127.0.0.1:8888'}
 
 其中m3u8url 可为链接、本地m3u8文件路径、文件夹路径、txt 文件（按
 name,m3u8url,key 的形式一行一个 ）
@@ -216,7 +233,7 @@ proxy
 
 2022.6.15
 
-修复若干问题
+修复若干问题，自动添加 ``ffmpeg mp4decrypt`` 等工具包
 
 2022.6.14
 

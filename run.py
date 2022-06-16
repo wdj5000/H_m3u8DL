@@ -1,6 +1,6 @@
 import sys
 import subprocess
-try:
-    subprocess.call("ffmpeg")
-except:
-    print('error')
+import os
+from H_m3u8DL import m3u8download
+
+print(sys.argv[0])

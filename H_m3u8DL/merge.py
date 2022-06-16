@@ -1,10 +1,9 @@
 import os
 import subprocess
-
+from H_m3u8DL.Util import util
 class Merge:
     def __init__(self,temp_dir:str,mode=1):
         self.temp_dir = temp_dir
-
         self.file_list = []
         for root, dirs, files in os.walk(temp_dir+r'/video'):
             for f in files:
@@ -35,10 +34,11 @@ class Merge:
         if not os.path.exists(self.temp_dir + "_ffmpeg.mp4"):
             self.mode1()
             try:
-                cmd = 'ffmpeg -loglevel panic'
+                cmd = f'{util().ffmpegPath} -loglevel panic'
                 subprocess.call(cmd)
 
-                cmd = f'ffmpeg -i "{self.temp_dir + ".mp4"}" -c copy "{self.temp_dir + "_ffmpeg.mp4"}" -loglevel panic'
+                cmd = f'{util().ffmpegPath} -i "{self.temp_dir + ".mp4"}" -c copy "{self.temp_dir + "_ffmpeg.mp4"}" -loglevel panic'
+
                 subprocess.call(cmd)
             except:
                 print('未找到 ffmpeg ')
@@ -47,7 +47,7 @@ class Merge:
     def mode3(self):
         if not os.path.exists(self.temp_dir + ".mp4"):
             try:
-                cmd = 'ffmpeg -loglevel panic'
+                cmd = f'{util().ffmpegPath} -loglevel panic'
                 subprocess.call(cmd)
                 filelist = [f"file './video/{str(i).zfill(6)}.ts'" for i in range(len(self.file_list))]
                 with open(self.temp_dir + '/filelist.txt','w') as f:
@@ -55,14 +55,14 @@ class Merge:
                         f.write(i)
                         f.write('\n')
                     f.close()
-                cmd = f'ffmpeg -f concat -safe 0 -i "{self.temp_dir + "/filelist.txt"}" -c copy "{self.temp_dir + ".mp4"}" -loglevel panic'
+                cmd = f'{util().ffmpegPath} -f concat -safe 0 -i "{self.temp_dir + "/filelist.txt"}" -c copy "{self.temp_dir + ".mp4"}" -loglevel panic'
                 subprocess.call(cmd)
 
             except:
                 print('未找到 ffmpeg ')
 
 def merge_video_audio(video_dir,audio_dir):
-    cmd = f'ffmpeg -i {video_dir} -i {audio_dir} -c:v copy -c:a aac -strict experimental {"mix_"+video_dir}'
+    cmd = f'{util().ffmpegPath} -i {video_dir} -i {audio_dir} -c:v copy -c:a aac -strict experimental {"mix_"+video_dir}'
     subprocess.call(cmd)
 
 
