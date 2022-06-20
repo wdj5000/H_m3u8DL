@@ -12,7 +12,7 @@ from H_m3u8DL.decrypt_plus import Decrypt_plus
 
 class Parser:
     def __init__(
-            self, m3u8url, title='',base_uri_parse='',method=None, key=None, iv=None, work_dir='./Downloads', headers=None,enable_del=True,merge_mode=3,proxies=None):
+            self, m3u8url, title='',base_uri_parse='',method=None, key=None, iv=None,nonce=None,work_dir='./Downloads', headers=None,enable_del=True,merge_mode=3,proxies=None):
 
         if not os.path.exists(work_dir):
             os.makedirs(work_dir)
@@ -38,6 +38,7 @@ class Parser:
         self.method = method
         self.key = key
         self.iv = iv
+        self.nonce = nonce
         self.work_dir = work_dir
         self.enable_del = enable_del
         self.merge_mode = merge_mode
@@ -162,7 +163,8 @@ class Parser:
                     'enable_del':self.enable_del,
                     'merge_mode':self.merge_mode,
                     'method':self.method,
-                    'key':self.key
+                    'key':self.key,
+                    'nonce':self.nonce
                 }
                 infos.append(info)
 
@@ -192,7 +194,8 @@ class Parser:
                         'enable_del': self.enable_del,
                         'merge_mode': self.merge_mode,
                         'method':self.method,
-                        'key':self.key
+                        'key':self.key,
+                        'nonce':self.nonce
                     }
 
                     infos.append(info)
@@ -204,7 +207,7 @@ class Parser:
         if 'key' in segments[0] or  m3u8obj.data['keys'] != [None]:
 
             self.method, segments = decrypt.Decrypt(m3u8obj, self.temp_dir, method=self.method, key=self.key,
-                                                    iv=self.iv).run()
+                                                    iv=self.iv,nonce=self.nonce).run()
 
 
             WideVine = ['SAMPLE-AES-CTR','cbcs','SAMPLE-AES'] # 针对widevine加密采取二进制合并

@@ -10,6 +10,7 @@ from Crypto.Cipher import AES
 import warnings
 from rich.console import Console
 from rich import print
+from chacha20poly1305 import ChaCha20Poly1305
 from H_m3u8DL.HEADERS import get_random_UA
 
 console = Console()
@@ -53,11 +54,12 @@ class FastRequests:
 
 
 class Decrypt:
-    def __init__(self, method, ts, key, iv=None):
+    def __init__(self, method, ts, key:bytes, iv=None,nonce=None):
         self.method = method
         self.ts = ts
         self.key = key
         self.iv = iv
+        self.nonce = nonce
 
     def AES_128_CBC(self):
         cryptor = AES.new(key=self.key, mode=AES.MODE_CBC, iv=self.iv)
@@ -68,6 +70,12 @@ class Decrypt:
         cryptor = AES.new(key=self.key, mode=AES.MODE_ECB)
         decrypt_ts = cryptor.decrypt(self.ts)
         return decrypt_ts
+
+    def CHACHA(self):
+        cryptor = ChaCha20Poly1305(self.key)
+        decrypt_ts = cryptor.decrypt(self.nonce,self.ts)
+        return decrypt_ts
+
 
     def copyrightDRM(self):
 
@@ -92,6 +100,12 @@ class Decrypt:
             ts = self.AES_128_CBC()
         elif self.method == 'copyrightDRM':
             ts = self.copyrightDRM()
+        elif self.method == 'CHACHA':
+            try:
+                ts = self.CHACHA()
+            except Exception as e:
+                print(e)
+                ts = self.ts
         elif self.method == 'default':
             ts = self.default()
 
@@ -141,7 +155,7 @@ class Consumer(Thread):
                     ts = response.content
 
                     if 'method' in info:
-                        ts = Decrypt(ts=ts, method=info['method'], key=info['key'], iv=info['iv']).run()
+                        ts = Decrypt(ts=ts, method=info['method'], key=info['key'], iv=None if 'iv' not in info else info['iv'],nonce=None if 'nonce' not in info else info['nonce']).run()
                     if ts[:4] == b'\x89PNG' or ts[:2] == bytes.fromhex('424D') or ts[:2] == bytes.fromhex('FFD8'):
                         ts_start = ts.find(b'G@')
 

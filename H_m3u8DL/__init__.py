@@ -11,6 +11,7 @@ def m3u8download(
         threads=16,
         key=None,
         iv=None,
+        nonce = None,
         method=None,
         work_dir=None,
         headers=None,
@@ -38,6 +39,7 @@ def m3u8download(
     # 构造m3u8下载信息
     # list: m3u8url = [{'m3u8url':m3u8url,'title':title},{'m3u8url':m3u8url,'title':title}]
 
+
     try:
         if headers is None:
             headers = {
@@ -62,15 +64,19 @@ def m3u8download(
             if type(m3u8url) == list:
                 infos = m3u8url
                 for info in infos:
-                    m3u8download(m3u8url=info['m3u8url'], title='' if 'title' not in info else info['title'],
-                                 base_uri_parse=None if 'base_uri_parse' not in info else info['base_uri_parse'],
-                                 enable_del=True if 'enable_del' not in info else info['enable_del'],
-                                 merge_mode=1 if 'merge_mode' not in info else info['merge_mode'],
-                                 headers=None if 'headers' not in info else info['headers'],
-                                 work_dir=None if 'work_dir' not in info else info['work_dir'],
-                                 method=None if 'method' not in info else info['method'],
-                                 key=None if 'key' not in info else info['key'],
-                                 proxy=None if 'proxy' not in info else info['proxy'])
+                    m3u8download(
+                        m3u8url=info['m3u8url'],
+                        title='' if 'title' not in info else info['title'],
+                        base_uri_parse=None if 'base_uri_parse' not in info else info['base_uri_parse'],
+                        enable_del=True if 'enable_del' not in info else info['enable_del'],
+                        merge_mode=1 if 'merge_mode' not in info else info['merge_mode'],
+                        headers=None if 'headers' not in info else info['headers'],
+                        work_dir=None if 'work_dir' not in info else info['work_dir'],
+                        method=None if 'method' not in info else info['method'],
+                        key=None if 'key' not in info else info['key'],
+                        iv=None if 'iv' not in info else info['iv'],
+                        nonce=None if 'nonce' not in info else info['nonce'],
+                        proxy=None if 'proxy' not in info else info['proxy'])
 
                 sys.exit(0)
             # dir: m3u8url = r'c:\windows\'
@@ -81,9 +87,21 @@ def m3u8download(
                         file = os.path.join(root, f)
                         if os.path.isfile(file):
                             if file.split('.')[-1] == 'm3u8':
-                                m3u8download(m3u8url=file, key=key, title=title, base_uri_parse=base_uri_parse,
-                                             enable_del=enable_del, merge_mode=merge_mode, headers=headers,
-                                             work_dir=work_dir, method=method, proxy=proxies)
+                                m3u8download(
+                                    m3u8url=file,
+                                    key=key,
+                                    iv=iv,
+                                    nonce=nonce,
+                                    title=title,
+                                    base_uri_parse=base_uri_parse,
+                                    enable_del=enable_del,
+                                    merge_mode=merge_mode,
+                                    headers=headers,
+                                    work_dir=work_dir,
+                                    method=method,
+                                    proxy=proxies
+                                )
+
                 sys.exit(0)
             # txt 文件中 title,m3u8url  一行一个链接
             elif os.path.isfile(m3u8url):
@@ -106,7 +124,9 @@ def m3u8download(
             title, durations, count, temp_dir, data, method, enable_del, merge_mode, key = parser.Parser(m3u8url, title,
                                                                                                          base_uri_parse,
                                                                                                          method=method,
-                                                                                                         key=key, iv=iv,
+                                                                                                         key=key,
+                                                                                                         iv=iv,
+                                                                                                         nonce=nonce,
                                                                                                          work_dir=work_dir,
                                                                                                          headers=headers,
                                                                                                          enable_del=enable_del,
@@ -139,6 +159,9 @@ def m3u8download(
                     elif method in WideVine:
                         info1['key'] = key
                         info1['iv'] = key
+                    elif method == 'CHACHA':
+                        info1['key'] = base64.b64decode(segment['key']['uri'])
+                        info1['nonce'] = segment['key']['nonce']
                     else:
                         info1['key'] = base64.b64decode(segment['key']['uri'])
                         info1['iv'] = bytes.fromhex(segment['key']['iv'])
@@ -172,6 +195,7 @@ def main(argv=None):
     parser.add_argument("-threads", default=16, help='线程数')
     parser.add_argument("-key", default=None, help='key')
     parser.add_argument("-iv", default=None, help='iv')
+    parser.add_argument("-nonce", default=None, help='nonce 可能用到的第二个key')
     parser.add_argument("-method", default=None, help='解密方法')
     parser.add_argument("-work_dir", default='./Downloads', help='工作目录')
     parser.add_argument("-headers", default=None, help='请求头')
@@ -184,7 +208,7 @@ def main(argv=None):
         pass
     else:
         m3u8download(m3u8url=args.m3u8url, title=args.title, base_uri_parse=args.base_uri_parse, threads=args.threads,
-                     key=args.key, iv=args.iv, method=args.method, work_dir=args.work_dir, headers=args.headers,
+                     key=args.key, iv=args.iv,nonce=args.nonce,method=args.method, work_dir=args.work_dir, headers=args.headers,
                      enable_del=args.enable_del, merge_mode=args.merge_mode, proxy=args.proxy)
 
 

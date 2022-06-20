@@ -142,7 +142,7 @@ method
 ^^^^^^
 
 解密时对应的解密方法，当前支持
-AES-128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine、copyrightDRM,一般不用更改，自动识别
+AES-128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine、copyrightDRM、CHACHA,一般不用更改，自动识别
 
 .. code:: 
 
@@ -151,6 +151,10 @@ AES-128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine、copyrightDRM,一般不用更
 .. code:: 
 
    m3u8download(m3u8url,title,key='',method='copyrightDRM')
+
+.. code:: 
+
+   m3u8download(m3u8url,title,key='',nonce='',method='CHACHA')
 
 .. _workdir:
 
@@ -230,6 +234,10 @@ proxy
 
 修复记录
 ~~~~~~~~
+
+2022.6.21
+
+新增\ ``CHACHA``\ 方式解密
 
 2022.6.15
 

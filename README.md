@@ -131,7 +131,7 @@ key = r"C:\Users\happy\Desktop\key.key"
 
 #### method
 
-解密时对应的解密方法，当前支持 AES-128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine、copyrightDRM,一般不用更改，自动识别
+解密时对应的解密方法，当前支持 AES-128、SAMPLE-AES-CTR、KOOLEARN-ET、Widevine、copyrightDRM、CHACHA,一般不用更改，自动识别
 
 ```
 m3u8download(m3u8url='https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',key='910d9a4a6c86d450d29b3a6a4eca3fd3',method='AES-128')
@@ -140,6 +140,12 @@ m3u8download(m3u8url='https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2
 ```
 m3u8download(m3u8url,title,key='',method='copyrightDRM')
 ```
+
+```
+m3u8download(m3u8url,title,key='',nonce='',method='CHACHA')
+```
+
+
 
 #### work_dir
 
@@ -205,6 +211,10 @@ m3u8download(m3u8url=m3u8rul,proxy={"http": "http://127.0.0.1:7890", "https": "h
 ```
 
 ### 修复记录
+
+2022.6.21
+
+新增`CHACHA`方式解密
 
 2022.6.15
 

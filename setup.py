@@ -6,7 +6,7 @@ from distutils.core import setup
 with open("README.rst", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-VERSION="0.3.6"
+VERSION="0.3.7"
 
 setup(
     name="H_m3u8DL",
@@ -22,7 +22,7 @@ setup(
     packages=["H_m3u8DL"],
 
     install_requires=[
-        "m3u8","pycryptodome","tqdm","retry","tornado","rich","requests"
+        "m3u8","pycryptodome","tqdm","retry","tornado","rich","requests","chacha20poly1305"
     ],
     platforms=["all"],
     url='https://github.com/hecoter/H_m3u8DL',

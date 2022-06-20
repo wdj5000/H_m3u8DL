@@ -3,7 +3,4 @@ import subprocess
 import os
 from H_m3u8DL import m3u8download
 import m3u8
-master_url = 'https://vuclip-eip2.akamaized.net/007e58474e2960f50b0f79a16b16fad3/VP6_V20220607031940/P2/video/325a2962-2b80-470d-b9c7-fa4c475f8a10/vid_1080p_V20220610163600.m3u8'
-m3u8download(master_url)
-# m3u8boj = m3u8.load(master_url)
-# print(m3u8boj.data)
+m3u8download(m3u8url='https://hls.videocc.net/4adf37ccc0/a/4adf37ccc0342e919fef2de4d02b473a_3.m3u8',method='CHACHA',key='910d9a4a6c86d450d29b3a6a4eca3fd3',nonce='910d9a4a6c86d450d29b3a6a4eca3fd3')

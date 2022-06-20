@@ -7,7 +7,7 @@ from H_m3u8DL.Util import util
 
 
 class Decrypt:
-    def __init__(self, m3u8obj, temp_dir, method=None, key=None, iv=None, headers=None):
+    def __init__(self, m3u8obj, temp_dir, method=None, key=None, iv=None,nonce=None, headers=None):
         if headers is None:
             self.headers = {'user-agent',
                        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat(0x63030532) Edg/100.0.4896.60'}
@@ -20,10 +20,12 @@ class Decrypt:
             # if self.method is None and 'keys' in m3u8obj.data:
             #     self.method = m3u8obj.data['keys'][-1]['method']
 
-        self.temp_dir = temp_dir
 
+        self.temp_dir = temp_dir
+        self.method = method
         self.key = key
         self.iv = iv
+        self.nonce = nonce
 
 
 
@@ -41,6 +43,8 @@ class Decrypt:
             self.mode_KOOLEARN_ET()
         elif self.method == 'copyrightDRM':
             self.mode_copyrightDRM()
+        elif self.method == 'CHACHA':
+            self.mode_CHACHA()
         elif self.method == 'default':
             self.mode_default()
 
@@ -93,6 +97,13 @@ class Decrypt:
 
     def mode_copyrightDRM(self):
         pass
+    def mode_CHACHA(self):
+        self.key = self.dec_key()
+        self.nonce = self.dec_nonce()
+        for i, segment in enumerate(self.segments):
+            self.segments[i]['key']['uri'] = self.key
+
+            self.segments[i]['key']['nonce'] = self.nonce
 
     def mode_cbcs(self):
         pass
@@ -165,6 +176,13 @@ class Decrypt:
             if len(iv) != 32:
                 return '00000000000000000000000000000000'
             return iv
+    def dec_nonce(self):
+        if type(self.nonce) == bytes:
+            return self.nonce
+        elif '=' in self.nonce:
+            return base64.b64decode(self.nonce)
+        else:
+            return bytes.fromhex(self.nonce)
 
     def run(self):
         self.judge_method()
