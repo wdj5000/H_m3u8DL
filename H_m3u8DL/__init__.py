@@ -27,7 +27,7 @@ def m3u8download(
     :param threads:线程数
     :param key:自定义key
     :param iv:自定义iv
-    :param method:自定义方法 'SAMPLE-AES-CTR', 'cbcs', 'SAMPLE-AES','AES-128','copyrightDRM'
+    :param method:自定义方法 'SAMPLE-AES-CTR', 'cbcs', 'SAMPLE-AES','AES-128','copyrightDRM','CHACHA'
     :param work_dir:工作目录
     :param headers:自定义请求头
     :param enable_del:下载完成后删除多余文件False True

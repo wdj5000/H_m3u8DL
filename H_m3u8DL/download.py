@@ -10,7 +10,7 @@ from Crypto.Cipher import AES
 import warnings
 from rich.console import Console
 from rich import print
-from chacha20poly1305 import ChaCha20Poly1305
+from Crypto.Cipher import ChaCha20
 from H_m3u8DL.HEADERS import get_random_UA
 
 console = Console()
@@ -72,8 +72,11 @@ class Decrypt:
         return decrypt_ts
 
     def CHACHA(self):
-        cryptor = ChaCha20Poly1305(self.key)
-        decrypt_ts = cryptor.decrypt(self.nonce,self.ts)
+        decrypt_ts = b''
+        for i in range(0,len(self.ts),1024):
+            cipher = ChaCha20.new(key=self.key, nonce=self.nonce)
+            decrypt_ts += cipher.decrypt(self.ts[i:i + 1024])
+
         return decrypt_ts
 
 
